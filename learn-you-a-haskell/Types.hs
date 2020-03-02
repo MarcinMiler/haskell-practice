@@ -178,3 +178,28 @@ instance Show TrafficLight where
     show Green = "Green light"
 
 ----------------------------------------------------------------------------------
+
+-- Functon typeclass
+
+-- class Functor f where
+--     fmap :: (a -> b) -> f a -> f b
+
+-- instance Functor Maybe where
+--      fmap f (Just x) = Just (f x)
+--      fmap f Nothing = Nothing
+
+-- instace Functor (Either a) where
+--      fmap f (Right x) = Right (f x)
+--      fmap f (Lext x) = Left x
+
+instance Functor Tree where
+    fmap f EmptyTree = EmptyTree
+    fmap f (Node x left right) = Node (f x) (fmap f left) (fmap f right)
+
+f1 = fmap (*2) EmptyTree
+
+-- EmptyTree
+
+f2 = fmap (*2) (foldr treeInsert EmptyTree [5,7,3,2,1,7])
+
+-- Node 14 (Node 2 EmptyTree (Node 4 EmptyTree (Node 6 EmptyTree (Node 10 EmptyTree EmptyTree)))) EmptyTree
