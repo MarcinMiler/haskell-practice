@@ -55,7 +55,7 @@ nudgeCircle = nudge (Circle (Point 34 34) 10) 5 10
 
 -- Derived instances
 
-data Person = Person { firstName :: String 
+data Person = Person { firstName :: String
                      , lastName :: String
                      , age :: Int 
                      } deriving (Eq, Show, Read)
@@ -115,6 +115,47 @@ pred' = pred Saturday
 
 -- Type synonyms
 
+type String' = [Char]
 
+type AssocList k v = [(k,v)] 
 
+--------------------------------------------------------------------------------
 
+-- Recursive data structures
+
+data List a = Empty | Cons a (List a) deriving (Eq, Ord, Show, Read)
+
+list1 = 5 `Cons` Empty
+
+-- Cons 5 Empty
+
+list2 = 4 `Cons` (5 `Cons` Empty)
+
+-- Cons 4 (Cons 5 Empty)
+
+data Tree a = EmptyTree | Node a (Tree a) (Tree a) deriving (Show, Read, Eq)
+
+singleton :: a -> Tree a
+singleton x = Node x EmptyTree EmptyTree
+
+treeInsert :: (Ord a) => a -> Tree a -> Tree a
+treeInsert x EmptyTree = singleton x
+treeInsert x (Node a left right)
+    | x == a = Node x left right
+    | x < a = Node a (treeInsert x left) right
+    | x > a = Node a left (treeInsert x right)
+
+treeElem :: (Ord a) => a -> Tree a -> Bool
+treeElem x EmptyTree = False
+treeElem x (Node a left right)
+    | x == a = True
+    | x < a = treeElem x left
+    | x > a = treeElem x right
+
+nums = [8,6,4,1,7,3,5]
+
+sampleTree = foldr treeInsert EmptyTree nums
+
+contains' = 8 `treeElem` sampleTree
+
+-- True
