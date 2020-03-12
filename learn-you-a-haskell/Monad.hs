@@ -104,3 +104,61 @@ res3 = do
     return x
 
 -- Nothing
+
+----------------------------------------------------------------------------------------
+
+-- List Monad
+
+-- instance Monad [] where
+--     return x = [x]
+
+--     xs >>= f = concat (map f xs)
+
+--     fail _ = []
+
+listMonad = [3,4,5] >>= \x -> [x,-x]
+
+-- [3,-3,4,-4,5,-5]
+
+listMonadFail = [] >>= \x -> ["bad"]
+
+-- []
+
+listMonad2 = [1,2] >>= \n -> ['a', 'b'] >>= \ch -> return (n, ch)
+
+-- [(1,'a'), (1,'b'), (2,'a'),(2,'b')]
+
+listMonad3 = do
+    n <- [1,2]
+    ch <- ['a','b']
+    return (n,ch)
+
+-- [(1,'a'), (1,'b'), (2,'a'),(2,'b')]
+
+listMonad4 = [ (n,ch) | n <- [1,2], ch <- ['a','b'] ]
+
+-- [(1,'a'), (1,'b'), (2,'a'),(2,'b')]
+
+-- class Monad m => MonadPlus a where
+--     mzero :: m a
+--     mplus = m a -> m a -> m a
+
+-- instance MonadPlus where
+--     mzero = []
+--     mplus = (++)
+
+-------------------------------------------------------------------------------
+
+-- Monads laws
+
+-- Left identity
+
+-- return x >>= f == f x
+
+-- Right identity
+
+-- m >>= return == m
+
+-- Associativity
+
+-- (m >>= f) >>= g == m >>= (\x -> f x >>= g)
